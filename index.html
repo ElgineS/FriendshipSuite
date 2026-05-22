@@ -1,0 +1,2214 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friendship Suite • Bestie Vibes Only</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Poppins:wght@600&amp;display=swap');
+
+        :root {
+            --primary: #ff00aa;
+            --secondary: #00f0ff;
+        }
+
+        body {
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+
+        .font-display {
+            font-family: 'Poppins', system_ui, sans-serif;
+            font-weight: 600;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .neon-pink {
+            box-shadow: 0 0 15px rgba(255, 0, 170, 0.5),
+                        0 0 30px rgba(255, 0, 170, 0.3);
+        }
+
+        .neon-cyan {
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.5),
+                        0 0 30px rgba(0, 240, 255, 0.3);
+        }
+
+        .section-header {
+            font-size: 2.25rem;
+            line-height: 1.1;
+            font-weight: 700;
+            background: linear-gradient(90deg, #ffffff, #e0e7ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .quiz-option {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .quiz-option:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        .quiz-option.selected {
+            border-color: #ff00aa;
+            box-shadow: 0 0 0 3px rgba(255, 0, 170, 0.3),
+                        0 10px 15px -3px rgba(255, 0, 170, 0.2);
+            transform: scale(1.03);
+        }
+
+        .stat-number {
+            font-variant-numeric: tabular-nums;
+        }
+
+        .leaderboard-row {
+            transition: all 0.3s ease;
+        }
+
+        .leaderboard-row:hover {
+            transform: translateX(8px);
+            background-color: rgba(255,255,255,0.05);
+        }
+
+        .floating-emoji {
+            position: absolute;
+            font-size: 1.5rem;
+            animation: float-up 1.8s ease forwards;
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        @keyframes float-up {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-120px) scale(0.6); opacity: 0; }
+        }
+
+        .confetti {
+            position: fixed;
+            top: -20px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            z-index: 99999;
+            animation: confetti-fall linear forwards;
+            pointer-events: none;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(110vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .modern-card {
+            transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1),
+                       box-shadow 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+
+        .modern-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.4);
+        }
+
+        .nav-active {
+            color: white;
+            position: relative;
+        }
+
+        .nav-active:after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, #ff00aa, #00f0ff);
+        }
+
+        .premium-gradient {
+            background: linear-gradient(135deg, #1a1429, #2a1f3d);
+        }
+
+        .friendship-score {
+            background: conic-gradient(#ff00aa 0% var(--score), #334155 var(--score) 100%);
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .quiz-container {
+            scrollbar-width: thin;
+            scrollbar-color: #ff00aa30 #1f2937;
+        }
+
+        .option-card {
+            background: rgba(255,255,255,0.06);
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+
+        .option-card.selected {
+            background: rgba(255, 0, 170, 0.15);
+            border-color: #ff00aa;
+        }
+
+        .neon-text {
+            text-shadow: 0 0 10px #ff00aa,
+                         0 0 20px #ff00aa;
+        }
+
+        .glass-dark {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(24px);
+        }
+
+        .metric-value {
+            font-size: 2.25rem;
+            line-height: 2.5rem;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body class="bg-[#0f0f23] text-white overflow-x-hidden">
+    <!-- NAV -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass-dark border-b border-white/10">
+        <div class="max-w-screen-xl mx-auto">
+            <div class="px-6 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-x-3">
+                    <!-- Logo -->
+                    <div class="flex items-center gap-x-2">
+                        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-pink-500 via-purple-500 to-cyan-400 flex items-center justify-center shadow-lg neon-pink">
+                            <i class="fa-solid fa-users text-white text-3xl"></i>
+                        </div>
+                        <div>
+                            <span class="font-display text-3xl font-bold tracking-tighter">Friendship</span>
+                            <span class="font-display text-3xl font-bold tracking-tighter bg-gradient-to-r from-pink-400 to-cyan-400 bg-clip-text text-transparent">Suite</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hidden md:flex items-center gap-x-8 text-sm">
+                    <a href="#home" onclick="showSection('home')" class="nav-active font-medium px-3 py-1.5 hover:text-pink-400 transition-colors">Discover</a>
+                    <a href="#trending" onclick="document.getElementById('trending-section').scrollIntoView({ behavior: 'smooth' })" class="font-medium px-3 py-1.5 hover:text-pink-400 transition-colors">Trending</a>
+                    <a href="#leaderboard" onclick="showSection('leaderboard')" class="font-medium px-3 py-1.5 hover:text-pink-400 transition-colors">Leaderboard</a>
+                </div>
+
+                <div class="flex items-center gap-x-3">
+                    <!-- Online Counter -->
+                    <div class="hidden sm:flex items-center gap-x-2 bg-white/5 px-3 py-1.5 rounded-2xl text-xs border border-white/10">
+                        <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                        <span class="font-mono text-emerald-400" id="online-count">14,892</span>
+                        <span class="text-white/60">online</span>
+                    </div>
+
+                    <!-- Sound Toggle -->
+                    <button onclick="toggleSound()" id="sound-toggle"
+                            class="w-10 h-10 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 rounded-2xl transition-all">
+                        <i class="fa-solid fa-volume-up text-xl"></i>
+                    </button>
+
+                    <!-- Dark Mode (always dark for vibe) -->
+                    <button onclick="toggleTheme()"
+                            class="w-10 h-10 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 rounded-2xl transition-all">
+                        <i class="fa-solid fa-moon text-xl"></i>
+                    </button>
+
+                    <!-- Profile -->
+                    <div onclick="showMyQuizzes()" class="flex items-center gap-x-2 cursor-pointer">
+                        <div class="w-8 h-8 rounded-2xl overflow-hidden border border-white/20" id="nav-avatar">
+                            <img src="https://i.pravatar.cc/32?u=you" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO / LANDING -->
+    <section id="home" class="pt-20 min-h-screen relative">
+        <!-- Animated Background Particles -->
+        <div id="hero-particles" class="absolute inset-0 z-0 overflow-hidden"></div>
+
+        <div class="max-w-screen-xl mx-auto px-6 pt-16 pb-20 relative z-10">
+            <div class="max-w-3xl">
+                <div class="inline-flex items-center gap-x-2 px-4 py-1.5 rounded-3xl bg-white/5 border border-white/10 mb-6">
+                    <div class="px-3 py-0.5 text-xs font-semibold bg-gradient-to-r from-pink-500 to-purple-600 rounded-2xl">GEN Z APPROVED</div>
+                    <span class="text-xs text-white/60">2.4m besties ranked this month</span>
+                </div>
+
+                <h1 class="text-7xl md:text-[5.2rem] leading-[1.05] font-display font-extrabold tracking-tighter">
+                    Who really<br>knows you?
+                </h1>
+                <p class="mt-6 max-w-md text-xl text-white/70">
+                    Create a viral friendship test. Send it to your friends.
+                    Discover who your real besties are.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4 mt-10">
+                    <button onclick="showCreateQuiz()"
+                            class="group px-9 py-4 bg-white text-black font-semibold text-lg rounded-3xl flex items-center justify-center gap-x-3 hover:scale-[1.02] active:scale-[0.985] transition-all shadow-xl neon-pink">
+                        <span>Create Your Quiz</span>
+                        <i class="fa-solid fa-arrow-right group-active:translate-x-1 transition"></i>
+                    </button>
+
+                    <button onclick="showTakeQuizModal()"
+                            class="px-8 py-4 border border-white/30 hover:bg-white/5 font-semibold text-lg rounded-3xl flex items-center justify-center gap-x-3 transition-all">
+                        <i class="fa-solid fa-play mr-2"></i>
+                        <span>Take a Quiz</span>
+                    </button>
+                </div>
+
+                <div class="flex items-center gap-x-4 mt-8">
+                    <div class="flex -space-x-3">
+                        <img src="https://i.pravatar.cc/28?u=a1" class="w-7 h-7 rounded-full border-2 border-[#0f0f23]">
+                        <img src="https://i.pravatar.cc/28?u=a2" class="w-7 h-7 rounded-full border-2 border-[#0f0f23]">
+                        <img src="https://i.pravatar.cc/28?u=a3" class="w-7 h-7 rounded-full border-2 border-[#0f0f23]">
+                        <img src="https://i.pravatar.cc/28?u=a4" class="w-7 h-7 rounded-full border-2 border-[#0f0f23]">
+                    </div>
+                    <div class="text-sm">
+                        <span class="font-semibold">Joined by</span>
+                        <span class="font-mono text-pink-400">142k</span>
+                        <span class="text-white/60">today</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Stats -->
+        <div class="absolute bottom-12 right-6 hidden lg:flex flex-col gap-y-3 z-20">
+            <div class="glass px-5 py-3 rounded-3xl flex items-center gap-x-4 text-sm">
+                <div>
+                    <div class="font-mono text-2xl font-semibold text-emerald-400">98.4k</div>
+                    <div class="text-[10px] text-white/60 -mt-1">quizzes today</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS SECTION -->
+    <section class="max-w-screen-xl mx-auto px-6 py-12">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="glass p-6 rounded-3xl text-center">
+                <div class="text-pink-400 text-4xl mb-1">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+                <div class="metric-value font-display font-bold" id="stat-quizzes">248,912</div>
+                <div class="text-white/60 text-sm mt-1">Quizzes Created</div>
+            </div>
+            <div class="glass p-6 rounded-3xl text-center">
+                <div class="text-cyan-400 text-4xl mb-1">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+                <div class="metric-value font-display font-bold" id="stat-tests">1,874,329</div>
+                <div class="text-white/60 text-sm mt-1">Friendship Tests Taken</div>
+            </div>
+            <div class="glass p-6 rounded-3xl text-center">
+                <div class="text-purple-400 text-4xl mb-1">
+                    <i class="fa-solid fa-tachometer-alt"></i>
+                </div>
+                <div class="metric-value font-display font-bold" id="stat-highest">100</div>
+                <div class="text-white/60 text-sm mt-1">Highest Score Ever</div>
+            </div>
+            <div class="glass p-6 rounded-3xl text-center">
+                <div class="text-amber-400 text-4xl mb-1">
+                    <i class="fa-solid fa-globe"></i>
+                </div>
+                <div class="metric-value font-display font-bold" id="stat-countries">142</div>
+                <div class="text-white/60 text-sm mt-1">Countries Represented</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TRENDING QUIZZES -->
+    <section id="trending-section" class="max-w-screen-xl mx-auto px-6 pb-16">
+        <div class="flex items-end justify-between mb-8">
+            <div>
+                <span class="px-3 py-1 text-xs font-semibold tracking-widest bg-white/10 rounded-full">HOT RIGHT NOW</span>
+                <h2 class="font-display text-4xl font-bold tracking-tighter mt-2">Trending Friendship Tests</h2>
+            </div>
+            <button onclick="showSection('leaderboard')" class="text-sm flex items-center gap-x-1 text-pink-400 hover:text-pink-300 transition">
+                VIEW ALL <i class="fa-solid fa-chevron-right ml-1 text-xs"></i>
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5" id="trending-grid">
+            <!-- Populated by JS -->
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="max-w-screen-xl mx-auto px-6 py-12 border-t border-white/10">
+        <h2 class="font-display text-center text-4xl font-bold tracking-tighter mb-10">Real besties, real tea</h2>
+
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="glass p-7 rounded-3xl">
+                <div class="flex gap-x-3 mb-5">
+                    <img src="https://i.pravatar.cc/48?u=test1" class="w-11 h-11 rounded-2xl">
+                    <div>
+                        <div class="font-semibold">Mia Torres</div>
+                        <div class="text-xs text-white/50">@miacore</div>
+                    </div>
+                </div>
+                <p class="italic text-white/80">"My best friend scored 97%. We literally finished each other's sentences. Soulmates confirmed 💖"</p>
+                <div class="mt-5 flex text-pink-400 text-xs">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-alt"></i>
+                </div>
+            </div>
+
+            <div class="glass p-7 rounded-3xl">
+                <div class="flex gap-x-3 mb-5">
+                    <img src="https://i.pravatar.cc/48?u=test2" class="w-11 h-11 rounded-2xl">
+                    <div>
+                        <div class="font-semibold">Jamal K.</div>
+                        <div class="text-xs text-white/50">@jamalknows</div>
+                    </div>
+                </div>
+                <p class="italic text-white/80">"I got 43% and still got the 'Knows You From TikTok' badge. Brutal but accurate 😂"</p>
+                <div class="mt-5 flex text-pink-400 text-xs">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i>
+                </div>
+            </div>
+
+            <div class="glass p-7 rounded-3xl">
+                <div class="flex gap-x-3 mb-5">
+                    <img src="https://i.pravatar.cc/48?u=test3" class="w-11 h-11 rounded-2xl">
+                    <div>
+                        <div class="font-semibold">Sofia Patel</div>
+                        <div class="text-xs text-white/50">@sofiaaesthetic</div>
+                    </div>
+                </div>
+                <p class="italic text-white/80">"My little sister got 12%. She's officially demoted to 'acquaintance'. 10/10 experience."</p>
+                <div class="mt-5 flex text-pink-400 text-xs">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LEADERBOARD PREVIEW -->
+    <section class="max-w-screen-xl mx-auto px-6 pb-16">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="font-display text-3xl font-bold">Global Friendship Leaderboard</h2>
+            <button onclick="showSection('leaderboard')"
+                    class="text-sm px-5 py-2 rounded-2xl border border-white/20 hover:bg-white/5 flex items-center gap-x-2">
+                <span>Full Rankings</span> <i class="fa-solid fa-trophy"></i>
+            </button>
+        </div>
+
+        <div class="glass rounded-3xl p-2" id="leaderboard-preview">
+            <!-- JS populated -->
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-white/10 py-12 bg-black/40">
+        <div class="max-w-screen-xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-y-8">
+                <div class="flex items-center gap-x-3">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-heart text-pink-500 mr-2"></i>
+                        <span class="font-semibold">Made with love for the besties</span>
+                    </div>
+                </div>
+
+                <div class="flex gap-x-6 text-sm">
+                    <a href="#" class="hover:text-pink-400 transition">Twitter</a>
+                    <a href="#" class="hover:text-pink-400 transition">Instagram</a>
+                    <a href="#" class="hover:text-pink-400 transition">TikTok</a>
+                    <a href="#" class="hover:text-pink-400 transition">Discord</a>
+                </div>
+
+                <div class="text-xs text-white/40">© Friendship Suite 2026 • Not affiliated with any government spy agency</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- CREATE QUIZ MODAL / PAGE -->
+    <div id="create-page" class="hidden fixed inset-0 bg-black/90 z-[100] overflow-auto">
+        <div class="max-w-3xl mx-auto px-5 py-8">
+            <div class="flex justify-between items-center mb-8 px-1">
+                <div>
+                    <span class="font-display text-4xl font-bold">Create Your Quiz</span>
+                    <p class="text-white/60">Let your friends prove they know you</p>
+                </div>
+                <button onclick="hideCreateQuiz()" class="w-11 h-11 flex items-center justify-center text-3xl hover:bg-white/10 rounded-2xl transition">&times;</button>
+            </div>
+
+            <!-- Step 1: Personal Info -->
+            <div id="create-step-1">
+                <div class="glass p-8 rounded-3xl mb-8">
+                    <h3 class="font-semibold text-xl mb-6 flex items-center gap-x-2">
+                        <span class="text-pink-400">1.</span> Your vibe check
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-1.5 text-white/70">Full Name</label>
+                            <input id="creator-name" type="text" value="Alex Rivera"
+                                   class="w-full bg-white/5 border border-white/20 focus:border-pink-500 rounded-2xl px-5 py-3.5 outline-none text-lg">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1.5 text-white/70">Nickname / Username</label>
+                            <input id="creator-nick" type="text" value="alexr"
+                                   class="w-full bg-white/5 border border-white/20 focus:border-pink-500 rounded-2xl px-5 py-3.5 outline-none text-lg">
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <label class="block text-sm font-medium mb-1.5 text-white/70">Short Bio</label>
+                        <textarea id="creator-bio" rows="2" placeholder="I live for late night drives and iced matcha..."
+                                  class="w-full bg-white/5 border border-white/20 focus:border-pink-500 rounded-3xl px-5 py-3.5 outline-none resize-y">Coffee addict • Plant mom • Professional overthinker</textarea>
+                    </div>
+
+                    <div class="mt-6">
+                        <label class="block text-sm font-medium mb-3 text-white/70">Profile Picture</label>
+                        <div class="flex items-center gap-x-6">
+                            <div onclick="document.getElementById('profile-upload').click()"
+                                 class="w-24 h-24 rounded-3xl border border-dashed border-white/30 flex items-center justify-center cursor-pointer hover:border-pink-400 transition overflow-hidden" id="profile-preview">
+                                <div class="text-center">
+                                    <i class="fa-solid fa-camera text-3xl text-white/40"></i>
+                                    <div class="text-xs mt-1 text-white/50">Upload</div>
+                                </div>
+                            </div>
+                            <div>
+                                <input type="file" id="profile-upload" accept="image/*" class="hidden" onchange="previewProfilePic(event)">
+                                <div class="text-xs text-white/50">JPG or PNG • Max 2MB</div>
+                                <div onclick="useDefaultAvatar()" class="text-xs text-pink-400 cursor-pointer mt-1 hover:underline">Use default avatar</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end">
+                    <button onclick="goToStep2()"
+                            class="px-10 py-3.5 bg-white text-black font-semibold rounded-3xl flex items-center gap-x-3 hover:bg-white/90 transition">
+                        Continue to Questions
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Categories -->
+            <div id="create-step-2" class="hidden">
+                <div class="glass p-8 rounded-3xl mb-8">
+                    <h3 class="font-semibold text-xl mb-2 flex items-center gap-x-2">
+                        <span class="text-pink-400">2.</span> Pick your categories
+                    </h3>
+                    <p class="text-sm text-white/60 mb-6">We'll generate questions from these. You can customize answers later.</p>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3" id="category-chips">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <div class="flex justify-between">
+                    <button onclick="goToStep1()" class="px-8 py-3 text-sm font-medium flex items-center gap-x-2 hover:bg-white/5 rounded-3xl transition">
+                        <i class="fa-solid fa-arrow-left"></i> Back
+                    </button>
+                    <button onclick="generateQuestionsForQuiz()"
+                            class="px-10 py-3.5 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold rounded-3xl flex items-center gap-x-3 hover:brightness-105 transition shadow-lg">
+                        Generate My Questions
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 3: Set Answers -->
+            <div id="create-step-3" class="hidden">
+                <div class="glass p-8 rounded-3xl mb-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <h3 class="font-semibold text-xl flex items-center gap-x-2">
+                                <span class="text-pink-400">3.</span> Set your correct answers
+                            </h3>
+                            <p class="text-sm text-white/60">Click the option that is true for YOU</p>
+                        </div>
+                        <div class="text-xs px-3 py-1 rounded-full bg-white/10 font-mono" id="questions-count">12 questions</div>
+                    </div>
+
+                    <div id="questions-answer-list" class="max-h-[480px] overflow-y-auto pr-3 quiz-container space-y-6">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center">
+                    <button onclick="goToStep2()" class="px-8 py-3 text-sm font-medium flex items-center gap-x-2 hover:bg-white/5 rounded-3xl transition">
+                        <i class="fa-solid fa-arrow-left"></i> Back
+                    </button>
+
+                    <button onclick="createQuizFinal()"
+                            class="px-12 py-4 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 text-white font-bold text-lg rounded-3xl flex items-center gap-x-3 shadow-[0_0_30px_rgb(255,0,170)] hover:scale-[1.02] transition">
+                        <span>LAUNCH QUIZ</span>
+                        <i class="fa-solid fa-rocket"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAKE QUIZ PAGE -->
+    <div id="take-quiz-page" class="hidden fixed inset-0 bg-[#0f0f23] z-[110] overflow-auto">
+        <div class="max-w-2xl mx-auto pt-8 pb-16 px-5">
+            <!-- Quiz Header -->
+            <div class="flex items-center justify-between mb-8">
+                <div class="flex items-center gap-x-4">
+                    <div onclick="exitQuiz()" class="cursor-pointer text-white/70 hover:text-white transition">
+                        <i class="fa-solid fa-times text-3xl"></i>
+                    </div>
+                    <div>
+                        <div id="quiz-creator-name" class="font-bold text-xl"></div>
+                        <div id="quiz-creator-subtitle" class="text-xs text-white/60"></div>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-x-4">
+                    <div class="flex items-center bg-white/5 px-3 py-1 rounded-2xl text-sm">
+                        <i class="fa-regular fa-clock text-pink-400 mr-1.5"></i>
+                        <span id="timer-display">08:00</span>
+                    </div>
+                    <div class="px-3 py-1 bg-white/5 rounded-2xl text-xs font-mono" id="question-progress">1/12</div>
+                </div>
+            </div>
+
+            <!-- Progress -->
+            <div class="mb-6">
+                <div class="h-2.5 bg-white/10 rounded-full overflow-hidden">
+                    <div id="progress-bar" class="h-full bg-gradient-to-r from-pink-500 to-cyan-400 rounded-full transition-all duration-300" style="width: 8%"></div>
+                </div>
+            </div>
+
+            <!-- Question -->
+            <div class="glass p-9 rounded-3xl mb-8">
+                <div id="question-category" class="inline-flex px-3 py-1 rounded-full text-xs tracking-widest bg-white/10 text-pink-400 font-medium mb-4"></div>
+
+                <div id="question-text" class="text-3xl leading-tight font-medium tracking-tight min-h-[90px]">
+                    <!-- Dynamic -->
+                </div>
+
+                <!-- Options -->
+                <div id="options-container" class="mt-8 grid grid-cols-1 gap-3">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <button onclick="prevQuestion()" id="prev-btn"
+                        class="px-6 py-3 flex items-center gap-x-2 text-sm border border-white/30 rounded-2xl hover:bg-white/5 transition disabled:opacity-40">
+                    <i class="fa-solid fa-chevron-left"></i> <span>Previous</span>
+                </button>
+
+                <button onclick="nextQuestion()" id="next-btn"
+                        class="px-8 py-3 bg-white text-black font-semibold rounded-2xl flex items-center gap-x-2 hover:bg-white/90 transition">
+                    <span id="next-btn-text">Next</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+
+            <div class="text-center mt-8 text-xs text-white/50">Your answers are private until you submit</div>
+        </div>
+    </div>
+
+    <!-- RESULTS PAGE -->
+    <div id="results-page" class="hidden fixed inset-0 bg-[#0f0f23] z-[120] overflow-auto">
+        <div class="max-w-md mx-auto pt-12 pb-16 px-5">
+            <div class="text-center mb-8">
+                <div class="mx-auto w-24 h-24 rounded-full border-4 border-pink-500/50 flex items-center justify-center mb-4">
+                    <div class="text-6xl">🎉</div>
+                </div>
+                <div class="font-display text-4xl font-bold tracking-tighter">Quiz Complete!</div>
+            </div>
+
+            <!-- Score Circle -->
+            <div class="relative mx-auto w-56 h-56 mb-8 flex items-center justify-center">
+                <svg class="w-56 h-56 -rotate-90" viewBox="0 0 120 120">
+                    <circle cx="60" cy="60" r="52" fill="none" stroke="#334155" stroke-width="9"/>
+                    <circle id="score-circle" cx="60" cy="60" r="52" fill="none"
+                            stroke="#ff00aa" stroke-width="9" stroke-dasharray="326.7"
+                            stroke-dashoffset="81.7" stroke-linecap="round"/>
+                </svg>
+                <div class="absolute flex flex-col items-center">
+                    <div id="final-score" class="font-display text-7xl font-extrabold">87</div>
+                    <div class="text-pink-400 text-sm font-semibold tracking-widest -mt-2">PERCENT</div>
+                </div>
+            </div>
+
+            <div class="text-center mb-8">
+                <div id="result-badge"
+                     class="inline-flex items-center gap-x-2 px-6 py-2 rounded-3xl text-sm font-bold mb-3">
+                    <!-- JS populated -->
+                </div>
+                <div id="result-message" class="text-2xl font-semibold tracking-tight max-w-xs mx-auto"></div>
+            </div>
+
+            <div class="glass p-5 rounded-3xl mb-8">
+                <div class="flex justify-between text-sm mb-3 px-1">
+                    <div class="text-white/60">Your ranking</div>
+                    <div class="font-mono text-pink-400" id="rank-text">#3 Bestie</div>
+                </div>
+                <div class="h-px bg-white/10 my-3"></div>
+                <div class="flex justify-between items-center">
+                    <div>
+                        <div class="font-semibold" id="friend-name-result"></div>
+                        <div class="text-xs text-white/60">Took 4m 12s</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-xs text-emerald-400">+142 XP</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reactions -->
+            <div class="mb-8">
+                <div class="text-xs uppercase tracking-widest text-white/50 mb-3 px-1">React to your result</div>
+                <div class="flex gap-x-3 justify-center">
+                    <button onclick="addReaction('❤️')" class="w-12 h-12 flex items-center justify-center text-3xl hover:scale-125 transition">❤️</button>
+                    <button onclick="addReaction('🔥')" class="w-12 h-12 flex items-center justify-center text-3xl hover:scale-125 transition">🔥</button>
+                    <button onclick="addReaction('😂')" class="w-12 h-12 flex items-center justify-center text-3xl hover:scale-125 transition">😂</button>
+                    <button onclick="addReaction('👀')" class="w-12 h-12 flex items-center justify-center text-3xl hover:scale-125 transition">👀</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="shareResult()"
+                        class="py-3.5 flex items-center justify-center gap-x-3 bg-white/5 hover:bg-white/10 border border-white/20 rounded-3xl text-sm font-semibold">
+                    <i class="fa-solid fa-share-alt"></i>
+                    <span>Share Score</span>
+                </button>
+                <button onclick="copyQuizLink()"
+                        class="py-3.5 flex items-center justify-center gap-x-3 bg-gradient-to-r from-pink-500 to-purple-600 rounded-3xl text-sm font-semibold">
+                    <i class="fa-solid fa-link"></i>
+                    <span>Copy Link</span>
+                </button>
+            </div>
+
+            <div class="mt-6 text-center">
+                <button onclick="restartToHome()"
+                        class="text-sm text-white/60 hover:text-white flex items-center justify-center gap-x-1 mx-auto">
+                    <i class="fa-solid fa-redo text-xs"></i>
+                    <span>Back to home</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LEADERBOARD FULL PAGE -->
+    <div id="leaderboard-page" class="hidden fixed inset-0 bg-[#0f0f23] z-[100] overflow-auto">
+        <div class="max-w-screen-xl mx-auto px-6 pt-10 pb-20">
+            <div class="flex justify-between items-center mb-10">
+                <div>
+                    <span class="font-display text-5xl font-bold">Friendship</span>
+                    <span class="font-display text-5xl font-bold bg-gradient-to-r from-pink-400 to-cyan-400 bg-clip-text text-transparent">Leaderboard</span>
+                </div>
+                <button onclick="showSection('home')" class="px-6 py-2 rounded-3xl border border-white/20 text-sm">Back to Home</button>
+            </div>
+
+            <div class="glass rounded-3xl p-2">
+                <div class="px-6 py-4 flex items-center justify-between border-b border-white/10 text-xs uppercase tracking-widest text-white/60">
+                    <div class="w-10"></div>
+                    <div class="flex-1 px-4">Bestie</div>
+                    <div class="w-28 text-center">Score</div>
+                    <div class="w-24 text-center">Time</div>
+                    <div class="w-32 text-center">Badge</div>
+                </div>
+
+                <div id="full-leaderboard-list" class="divide-y divide-white/10 max-h-[520px] overflow-auto">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <div class="text-center mt-8 text-xs text-white/50">Updated live • All scores verified by the Friendship Suite algorithm</div>
+        </div>
+    </div>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Tailwind script
+        function initializeTailwind() {
+            document.documentElement.style.setProperty('--accent-pink', '#ff00aa');
+
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        fontFamily: {
+                            'display': ['Poppins', 'system-ui', 'sans-serif']
+                        }
+                    }
+                }
+            };
+        }
+
+        // Global variables
+        let currentQuiz = null;
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let timerInterval = null;
+        let timeLeft = 480; // 8 minutes in seconds
+        let soundEnabled = true;
+        let currentUserQuizId = null;
+        let quizzes = {};
+        let selectedCategories = [];
+        let selectedQuestionsForCreation = [];
+
+        // Question Pool (50+ questions)
+        const questionPool = [
+            // Food (8)
+            { id: 1, category: "Food", q: "What's my favorite food?", options: ["Pizza 🍕", "Sushi 🍣", "Tacos 🌮", "Pasta 🍝", "Burgers 🍔", "Ramen 🍜"] },
+            { id: 2, category: "Food", q: "What's my favorite fast food restaurant?", options: ["McDonald's", "KFC", "Taco Bell", "Chipotle", "In-N-Out", "Wendy's"] },
+            { id: 3, category: "Food", q: "What's my ultimate comfort food?", options: ["Mac & Cheese", "Ice Cream", "French Fries", "Chocolate", "Pizza", "Ramen"] },
+            { id: 4, category: "Food", q: "What drink do I order the most?", options: ["Iced Matcha", "Bubble Tea", "Cold Brew", "Lemonade", "Coca-Cola", "Water"] },
+            { id: 5, category: "Food", q: "Favorite dessert?", options: ["Cheesecake", "Brownies", "Donuts", "Ice Cream", "Cupcakes", "Cookies"] },
+            { id: 6, category: "Food", q: "What's my go-to breakfast?", options: ["Avocado Toast", "Cereal", "Pancakes", "Eggs & Bacon", "Smoothie Bowl", "Nothing"] },
+            { id: 7, category: "Food", q: "Spiciest food I can handle?", options: ["Mild", "Medium", "Hot", "Extra Hot", "Ghost Pepper Level"] },
+            { id: 8, category: "Food", q: "Favorite snack?", options: ["Chips", "Popcorn", "Chocolate", "Fruit", "Nuts", "Candy"] },
+
+            // Music (7)
+            { id: 9, category: "Music", q: "Who's my favorite artist right now?", options: ["Taylor Swift", "The Weeknd", "Billie Eilish", "Bad Bunny", "Ariana Grande", "Drake"] },
+            { id: 10, category: "Music", q: "What genre do I vibe with most?", options: ["Pop", "Hip-Hop", "R&B", "Indie", "EDM", "Alternative"] },
+            { id: 11, category: "Music", q: "What song describes me best?", options: ["Anti-Hero", "Levitating", "Blinding Lights", "drivers license", "Watermelon Sugar", "Peaches"] },
+            { id: 12, category: "Music", q: "Favorite concert I've been to?", options: ["Taylor Swift", "BTS", "The Weeknd", "Billie Eilish", "Harry Styles", "None yet"] },
+            { id: 13, category: "Music", q: "What music do I blast in the car?", options: ["Pop Hits", "Rap", "Throwbacks", "Lo-Fi", "EDM", "Indie"] },
+            { id: 14, category: "Music", q: "My guilty pleasure song?", options: ["WAP", "Old Town Road", "Baby Shark", "Let It Go", "All I Want For Christmas", "Despacito"] },
+            { id: 15, category: "Music", q: "Music I listen to when sad?", options: ["Sad Girl Hours", "Lofi Chill", "Breakup Anthems", "Classical", "Nothing - I dance it out", "Podcasts"] },
+
+            // Movies (6)
+            { id: 16, category: "Movies", q: "What's my favorite movie of all time?", options: ["Everything Everywhere All at Once", "Spider-Man: No Way Home", "The Batman", "Barbie", "Dune", "Top Gun: Maverick"] },
+            { id: 17, category: "Movies", q: "Favorite movie genre?", options: ["Action", "Comedy", "Sci-Fi", "Horror", "Romance", "Animated"] },
+            { id: 18, category: "Movies", q: "Movie I can quote word for word?", options: ["Mean Girls", "The Office (wait movie?)", "Inception", "Harry Potter", "La La Land", "Crazy Rich Asians"] },
+            { id: 19, category: "Movies", q: "Dream movie to star in?", options: ["Superhero Film", "Rom-Com", "Horror", "Musical", "Sci-Fi Epic", "Animated Feature"] },
+            { id: 20, category: "Movies", q: "Favorite Disney movie?", options: ["Encanto", "Moana", "Lion King", "Frozen", "Aladdin", "Toy Story"] },
+            { id: 21, category: "Movies", q: "Scariest movie I've watched?", options: ["Hereditary", "Get Out", "The Conjuring", "Midsommar", "None - I don't do horror", "It"] },
+
+            // TV Shows (5)
+            { id: 22, category: "TV Shows", q: "What's my current favorite TV show?", options: ["Euphoria", "Stranger Things", "The Office", "Squid Game", "Bridgerton", "House of the Dragon"] },
+            { id: 23, category: "TV Shows", q: "Favorite reality show?", options: ["Love Island", "RuPaul's Drag Race", "The Bachelor", "Big Brother", "Survivor", "Jersey Shore"] },
+            { id: 24, category: "TV Shows", q: "TV show I binge most?", options: ["Friends", "The Mandalorian", "Abbott Elementary", "Only Murders in the Building", "Yellowjackets", "Succession"] },
+            { id: 25, category: "TV Shows", q: "Animated show I love?", options: ["Arcane", "Avatar: The Last Airbender", "Rick and Morty", "SpongeBob", "South Park", "The Simpsons"] },
+            { id: 26, category: "TV Shows", q: "Show I wish never ended?", options: ["Friends", "The Good Place", "Brooklyn Nine-Nine", "Schitt's Creek", "Parks and Rec", "New Girl"] },
+
+            // Gaming (5)
+            { id: 27, category: "Gaming", q: "What's my favorite video game?", options: ["Minecraft", "Fortnite", "Genshin Impact", "Valorant", "Roblox", "Stardew Valley"] },
+            { id: 28, category: "Gaming", q: "Gaming platform I use most?", options: ["PC", "PlayStation 5", "Nintendo Switch", "Xbox", "Mobile", "VR Headset"] },
+            { id: 29, category: "Gaming", q: "Game I play when I'm bored?", options: ["Roblox", "Among Us", "Fall Guys", "Animal Crossing", "Apex Legends", "Candy Crush"] },
+            { id: 30, category: "Gaming", q: "Most hours spent on?", options: ["League of Legends", "Valorant", "Minecraft", "Genshin Impact", "Call of Duty", "Animal Crossing"] },
+            { id: 31, category: "Gaming", q: "Dream game I'm waiting for?", options: ["GTA VI", "The Legend of Zelda", "Elden Ring 2", "Hades II", "Silksong", "Final Fantasy XVI"] },
+
+            // Lifestyle (6)
+            { id: 32, category: "Lifestyle", q: "Dream vacation destination?", options: ["Japan", "Bali", "Italy", "Santorini", "New York", "Dubai"] },
+            { id: 33, category: "Lifestyle", q: "What time do I usually go to sleep?", options: ["Before 10 PM", "11 PM - 12 AM", "12 AM - 2 AM", "After 3 AM", "It varies wildly", "Early bird 9 PM"] },
+            { id: 34, category: "Lifestyle", q: "Biggest fear?", options: ["Spiders", "Heights", "Public Speaking", "Being Forgotten", "Failure", "Clowns"] },
+            { id: 35, category: "Lifestyle", q: "If I became rich overnight, I'd...", options: ["Travel the world", "Buy a mansion", "Start a business", "Donate to charity", "Invest in crypto", "Buy a private island"] },
+            { id: 36, category: "Lifestyle", q: "Favorite season?", options: ["Summer", "Fall", "Winter", "Spring", "All of them", "I hate seasons"] },
+            { id: 37, category: "Lifestyle", q: "Morning person or night owl?", options: ["Morning Person", "Night Owl", "Neither - chaotic", "Depends on the day"] },
+
+            // Fashion (5)
+            { id: 38, category: "Fashion", q: "Favorite clothing brand?", options: ["Nike", "Zara", "Gucci", "H&M", "Uniqlo", "Levi's"] },
+            { id: 39, category: "Fashion", q: "My signature color?", options: ["Black", "Pink", "Purple", "Baby Blue", "Green", "Beige"] },
+            { id: 40, category: "Fashion", q: "Aesthetic that fits me best?", options: ["Y2K", "Cottagecore", "Streetwear", "Dark Academia", "Soft Girl", "Cyberpunk"] },
+            { id: 41, category: "Fashion", q: "Favorite accessory?", options: ["Sunglasses", "Jewelry", "Hats", "Bags", "Belts", "Watches"] },
+            { id: 42, category: "Fashion", q: "Go-to outfit?", options: ["Oversized hoodie + leggings", "Jeans + crop top", "All black", "Colorful prints", "Athleisure", "Vintage"] },
+
+            // Relationships (5)
+            { id: 43, category: "Relationships", q: "Biggest relationship red flag?", options: ["Bad communication", "Jealousy", "Lying", "Disrespectful to service staff", "No ambition", "Doesn't like my friends"] },
+            { id: 44, category: "Relationships", q: "My toxic trait?", options: ["Overthinking everything", "Procrastinating", "Being too sarcastic", "Ghosting when busy", "Perfectionism", "People pleasing"] },
+            { id: 45, category: "Relationships", q: "Dream first date?", options: ["Picnic in the park", "Fancy dinner", "Movie night at home", "Amusement park", "Beach walk at sunset", "Concert"] },
+            { id: 46, category: "Relationships", q: "My love language?", options: ["Words of Affirmation", "Quality Time", "Gifts", "Acts of Service", "Physical Touch", "All of the above"] },
+            { id: 47, category: "Relationships", q: "Biggest flex in a relationship?", options: ["I'm extremely loyal", "I plan the best dates", "I cook amazing food", "I'm hilarious", "I give great advice", "I'm supportive AF"] },
+
+            // Internet Culture (6)
+            { id: 48, category: "Internet Culture", q: "Favorite social media platform?", options: ["TikTok", "Instagram", "X / Twitter", "YouTube", "Discord", "BeReal"] },
+            { id: 49, category: "Internet Culture", q: "App I spend the most time on?", options: ["TikTok", "Instagram", "YouTube", "Twitter", "Spotify", "Reddit"] },
+            { id: 50, category: "Internet Culture", q: "Viral trend I participated in?", options: ["Renegade", "Savage Love Dance", "Silhouette Challenge", "Sea Shanty", "None, I'm too cool", "The Ocean Eyes trend"] },
+            { id: 51, category: "Internet Culture", q: "Meme that describes me?", options: ["This is Fine Dog", "Distracted Boyfriend", "Woman Yelling at Cat", "Surprised Pikachu", "Drake Hotline Bling", "Expanding Brain"] },
+            { id: 52, category: "Internet Culture", q: "Celebrity I'd probably date?", options: ["Timothée Chalamet", "Zendaya", "Harry Styles", "Florence Pugh", "Pedro Pascal", "Anya Taylor-Joy"] },
+            { id: 53, category: "Internet Culture", q: "What's my biggest fear in 2026?", options: ["AI taking over", "Running out of content", "Bad WiFi", "FOMO", "My screen time report", "Missing a viral trend"] },
+
+            // Random Chaos & Personal Habits (8)
+            { id: 54, category: "Random Chaos", q: "What's my weirdest habit?", options: ["Talking to myself", "Organizing by color", "Eating pizza crust first", "Naming my plants", "Singing loudly in the shower", "Collecting random trinkets"] },
+            { id: 55, category: "Random Chaos", q: "What annoys me the most?", options: ["Slow walkers", "Loud chewers", "Spoilers", "Bad WiFi", "People who don't reply", "Auto-correct fails"] },
+            { id: 56, category: "Random Chaos", q: "Hidden talent?", options: ["Whistling", "Doing impressions", "Remembering song lyrics", "Making people laugh", "Drawing", "Juggling"] },
+            { id: 57, category: "Random Chaos", q: "What could I survive longest without?", options: ["My phone", "Coffee", "Music", "Friends", "Food", "Sleep"] },
+            { id: 58, category: "Random Chaos", q: "Which friend group role am I?", options: ["The Mom Friend", "The Comedian", "The Therapist", "The Hype Man", "The Planner", "The Wild Card"] },
+            { id: 59, category: "Personal Habits", q: "My morning routine?", options: ["Scroll TikTok for 40 mins", "Workout", "Meditation & journaling", "Coffee first thing", "Snooze button 5 times", "Make my bed"] },
+            { id: 60, category: "Personal Habits", q: "Night routine?", options: ["10-step skincare", "Read a book", "Watch YouTube in bed", "Plan tomorrow", "Endless scrolling", "Podcasts"] },
+            { id: 61, category: "Personal Habits", q: "Signature scent?", options: ["Vanilla", "Citrus", "Floral", "Woody / Musky", "Fresh linen", "Gourmand / Sweet"] }
+        ];
+
+        // Categories list
+        const categoriesList = ["Food", "Music", "Movies", "TV Shows", "Gaming", "Lifestyle", "Fashion", "Relationships", "Internet Culture", "Random Chaos", "Personal Habits"];
+
+        // Initialize everything
+        function initializeApp() {
+            initializeTailwind();
+            loadFromLocalStorage();
+            seedSampleData();
+            renderTrendingQuizzes();
+            renderLeaderboardPreview();
+            updateGlobalStats();
+            initializeParticles();
+            startOnlineCounter();
+            setupKeyboardShortcuts();
+
+            // Show home by default
+            document.getElementById('home').classList.remove('hidden');
+
+            // Random tip in console
+            console.log('%c[Friendship Suite] Fully loaded. All features functional.', 'color:#64748b');
+
+            // Easter egg
+            setTimeout(() => {
+                const nav = document.querySelector('nav');
+                if (nav) nav.addEventListener('click', () => {
+                    if (Math.random() < 0.03) launchMiniConfetti(30);
+                });
+            }, 5000);
+        }
+
+        function loadFromLocalStorage() {
+            const savedQuizzes = localStorage.getItem('friendshipQuizzes');
+            if (savedQuizzes) {
+                quizzes = JSON.parse(savedQuizzes);
+            } else {
+                quizzes = {};
+            }
+
+            const savedSound = localStorage.getItem('fsSoundEnabled');
+            if (savedSound !== null) {
+                soundEnabled = JSON.parse(savedSound);
+                updateSoundIcon();
+            }
+        }
+
+        function saveToLocalStorage() {
+            localStorage.setItem('friendshipQuizzes', JSON.stringify(quizzes));
+        }
+
+        function seedSampleData() {
+            if (Object.keys(quizzes).length > 0) return;
+
+            // Sample Quiz 1: Sophia's
+            const sampleQuiz1 = {
+                id: "FS-SOPHIA",
+                creator: {
+                    name: "Sophia Patel",
+                    nick: "sophiachill",
+                    bio: "Plant mom • Coffee snob • Professional playlist curator",
+                    pic: "https://i.pravatar.cc/128?u=sophia"
+                },
+                questions: [
+                    { ...questionPool[0], correctIndex: 2 },
+                    { ...questionPool[9], correctIndex: 0 },
+                    { ...questionPool[16], correctIndex: 0 },
+                    { ...questionPool[32], correctIndex: 1 },
+                    { ...questionPool[48], correctIndex: 0 },
+                    { ...questionPool[54], correctIndex: 3 }
+                ],
+                createdAt: Date.now() - 86400000 * 2,
+                results: [
+                    { friendName: "Maya", score: 6, percentage: 100, timeTaken: "3m 42s", date: Date.now() - 3600000, badge: "Soul Twin" },
+                    { friendName: "Liam", score: 5, percentage: 83, timeTaken: "5m 11s", date: Date.now() - 7200000, badge: "Certified Bestie" },
+                    { friendName: "Zoe", score: 3, percentage: 50, timeTaken: "4m 55s", date: Date.now() - 10800000, badge: "Knows You From TikTok" }
+                ]
+            };
+
+            quizzes["FS-SOPHIA"] = sampleQuiz1;
+
+            // Sample Quiz 2
+            const sampleQuiz2 = {
+                id: "FS-JAMAL",
+                creator: {
+                    name: "Jamal Khan",
+                    nick: "jamalknows",
+                    bio: "Basketball • Gaming • Late night drives",
+                    pic: "https://i.pravatar.cc/128?u=jamal"
+                },
+                questions: [
+                    { ...questionPool[27], correctIndex: 0 },
+                    { ...questionPool[1], correctIndex: 4 },
+                    { ...questionPool[38], correctIndex: 0 },
+                    { ...questionPool[43], correctIndex: 1 },
+                    { ...questionPool[51], correctIndex: 2 }
+                ],
+                createdAt: Date.now() - 86400000 * 5,
+                results: [
+                    { friendName: "Tyler", score: 4, percentage: 80, timeTaken: "2m 58s", date: Date.now() - 1800000, badge: "Certified Bestie" },
+                    { friendName: "Ava", score: 2, percentage: 40, timeTaken: "6m 12s", date: Date.now() - 5400000, badge: "Side Character" }
+                ]
+            };
+            quizzes["FS-JAMAL"] = sampleQuiz2;
+
+            saveToLocalStorage();
+        }
+
+        function updateGlobalStats() {
+            let totalQuizzes = Object.keys(quizzes).length;
+            let totalTests = 0;
+            let highest = 0;
+
+            Object.values(quizzes).forEach(quiz => {
+                totalTests += quiz.results ? quiz.results.length : 0;
+                if (quiz.results) {
+                    quiz.results.forEach(r => {
+                        if (r.percentage > highest) highest = r.percentage;
+                    });
+                }
+            });
+
+            // Animate numbers
+            animateValue('stat-quizzes', 120000, totalQuizzes, 1200);
+            animateValue('stat-tests', 950000, totalTests, 1400);
+            animateValue('stat-highest', 87, highest, 900);
+            document.getElementById('stat-countries').textContent = "142";
+        }
+
+        function animateValue(id, start, end, duration) {
+            const element = document.getElementById(id);
+            if (!element) return;
+
+            const range = end - start;
+            let current = start;
+            const increment = end > start ? Math.ceil(range / (duration / 16)) : Math.floor(range / (duration / 16));
+            const timer = setInterval(() => {
+                current += increment;
+                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+                    current = end;
+                    clearInterval(timer);
+                }
+                element.textContent = current.toLocaleString();
+            }, 16);
+        }
+
+        function startOnlineCounter() {
+            let count = 14892;
+            const el = document.getElementById('online-count');
+
+            setInterval(() => {
+                count += Math.floor(Math.random() * 4) + 1;
+                if (el) el.textContent = count.toLocaleString();
+            }, 4200);
+        }
+
+        function initializeParticles() {
+            const container = document.getElementById('hero-particles');
+            if (!container) return;
+
+            for (let i = 0; i < 28; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+
+                const size = Math.random() * 6 + 3;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+
+                const colors = ['#ff00aa', '#00f0ff', '#c026ff', '#ffd700'];
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.opacity = Math.random() * 0.5 + 0.3;
+
+                container.appendChild(particle);
+
+                // Gentle floating animation
+                animateParticle(particle);
+            }
+        }
+
+        function animateParticle(particle) {
+            const duration = Math.random() * 18000 + 14000;
+            const startX = parseFloat(particle.style.left);
+
+            particle.animate([
+                { transform: `translate(0, 0)` },
+                { transform: `translate(${Math.random() * 40 - 20}px, ${Math.random() * 80 + 40}px)` }
+            ], {
+                duration: duration,
+                iterations: Infinity,
+                direction: 'alternate',
+                easing: 'ease-in-out'
+            });
+        }
+
+        function setupKeyboardShortcuts() {
+            document.addEventListener('keydown', (e) => {
+                if (e.key === '/' && document.activeElement.tagName === 'BODY') {
+                    e.preventDefault();
+                    showTakeQuizModal();
+                }
+
+                if (e.metaKey && e.key === "k") {
+                    e.preventDefault();
+                    showCreateQuiz();
+                }
+            });
+        }
+
+        // Category chips
+        function renderCategoryChips() {
+            const container = document.getElementById('category-chips');
+            container.innerHTML = '';
+
+            categoriesList.forEach(cat => {
+                const chip = document.createElement('div');
+                chip.className = `px-4 py-2.5 text-sm rounded-2xl cursor-pointer flex items-center justify-center border transition-all ${selectedCategories.includes(cat) ? 'bg-pink-500 border-pink-600 text-white' : 'bg-white/5 border-white/20 hover:bg-white/10'}`;
+                chip.innerHTML = `
+                    <span>${cat}</span>
+                `;
+
+                chip.onclick = () => {
+                    if (selectedCategories.includes(cat)) {
+                        selectedCategories = selectedCategories.filter(c => c !== cat);
+                        chip.classList.remove('bg-pink-500', 'border-pink-600', 'text-white');
+                        chip.classList.add('bg-white/5', 'border-white/20');
+                    } else {
+                        selectedCategories.push(cat);
+                        chip.classList.add('bg-pink-500', 'border-pink-600', 'text-white');
+                        chip.classList.remove('bg-white/5', 'border-white/20');
+                    }
+                };
+
+                container.appendChild(chip);
+            });
+        }
+
+        function goToStep1() {
+            document.getElementById('create-step-1').classList.remove('hidden');
+            document.getElementById('create-step-2').classList.add('hidden');
+            document.getElementById('create-step-3').classList.add('hidden');
+        }
+
+        function goToStep2() {
+            const name = document.getElementById('creator-name').value.trim();
+            if (!name || name.length < 2) {
+                alert("Please enter your name (at least 2 characters)");
+                return;
+            }
+
+            document.getElementById('create-step-1').classList.add('hidden');
+            document.getElementById('create-step-2').classList.remove('hidden');
+            document.getElementById('create-step-3').classList.add('hidden');
+
+            if (selectedCategories.length === 0) {
+                // Pre-select some
+                selectedCategories = ["Food", "Music", "Movies", "Internet Culture", "Random Chaos"];
+            }
+            renderCategoryChips();
+        }
+
+        function generateQuestionsForQuiz() {
+            if (selectedCategories.length === 0) {
+                alert("Please select at least 1 category!");
+                return;
+            }
+
+            selectedQuestionsForCreation = [];
+
+            // Pick 2 questions per selected category (max 14 questions)
+            selectedCategories.forEach(cat => {
+                const catQuestions = questionPool.filter(q => q.category === cat);
+                const shuffled = [...catQuestions].sort(() => 0.5 - Math.random());
+                const picked = shuffled.slice(0, 2);
+                selectedQuestionsForCreation.push(...picked);
+            });
+
+            // Limit to 14
+            if (selectedQuestionsForCreation.length > 14) {
+                selectedQuestionsForCreation = selectedQuestionsForCreation.slice(0, 14);
+            }
+
+            // Shuffle final order
+            selectedQuestionsForCreation.sort(() => 0.5 - Math.random());
+
+            document.getElementById('create-step-2').classList.add('hidden');
+            document.getElementById('create-step-3').classList.remove('hidden');
+
+            renderQuestionsForAnswerSelection();
+        }
+
+        function renderQuestionsForAnswerSelection() {
+            const container = document.getElementById('questions-answer-list');
+            container.innerHTML = '';
+            document.getElementById('questions-count').textContent = `${selectedQuestionsForCreation.length} questions`;
+
+            selectedQuestionsForCreation.forEach((q, idx) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = `glass p-5 rounded-3xl border border-white/10`;
+
+                let optionsHTML = '';
+                q.options.forEach((opt, optIdx) => {
+                    optionsHTML += `
+                        <div onclick="selectCorrectAnswer(${idx}, ${optIdx}, this)"
+                             class="option-card cursor-pointer px-5 py-3 rounded-2xl text-sm flex items-center gap-x-3 mb-2 last:mb-0 hover:border-pink-400/60 transition-all">
+                            <div class="w-6 h-6 flex-shrink-0 rounded-full border border-white/30 flex items-center justify-center">
+                                <div class="w-2.5 h-2.5 rounded-full bg-transparent transition-all" id="dot-${idx}-${optIdx}"></div>
+                            </div>
+                            <span class="flex-1">${opt}</span>
+                        </div>
+                    `;
+                });
+
+                qDiv.innerHTML = `
+                    <div class="flex justify-between mb-4">
+                        <div>
+                            <span class="text-xs px-2.5 py-px rounded bg-white/10 text-pink-300">${q.category}</span>
+                        </div>
+                        <span class="text-xs text-white/50 font-mono">#${idx + 1}</span>
+                    </div>
+                    <div class="font-semibold text-lg mb-4 leading-tight">${q.q}</div>
+                    <div class="space-y-1">${optionsHTML}</div>
+                `;
+
+                container.appendChild(qDiv);
+            });
+        }
+
+        function selectCorrectAnswer(qIndex, optIndex, element) {
+            // Deselect all in this question
+            const parent = element.parentNode;
+            Array.from(parent.children).forEach(el => {
+                el.classList.remove('selected', 'border-pink-500');
+                const dot = el.querySelector(`[id^="dot-"]`);
+                if (dot) dot.classList.remove('bg-pink-500');
+                if (dot) dot.style.background = 'transparent';
+            });
+
+            // Select this one
+            element.classList.add('selected', 'border-pink-500');
+            const dot = element.querySelector(`[id^="dot-${qIndex}-${optIndex}"]`);
+            if (dot) {
+                dot.style.background = '#ff00aa';
+                dot.classList.add('bg-pink-500');
+            }
+
+            // Store selection
+            selectedQuestionsForCreation[qIndex].correctIndex = optIndex;
+        }
+
+        function createQuizFinal() {
+            // Validate all questions have correct answer selected
+            const incomplete = selectedQuestionsForCreation.filter(q => q.correctIndex === undefined);
+            if (incomplete.length > 0) {
+                alert(`Please select your answer for all questions! (${incomplete.length} remaining)`);
+                return;
+            }
+
+            const name = document.getElementById('creator-name').value.trim();
+            const nick = document.getElementById('creator-nick').value.trim() || name.split(' ')[0];
+            const bio = document.getElementById('creator-bio').value.trim();
+
+            // Get profile pic
+            const preview = document.getElementById('profile-preview');
+            let pic = preview.querySelector('img') ? preview.querySelector('img').src : "https://i.pravatar.cc/128?u=default";
+
+            const quizId = "FS-" + Math.random().toString(36).substring(2, 8).toUpperCase();
+
+            const newQuiz = {
+                id: quizId,
+                creator: { name, nick, bio, pic },
+                questions: selectedQuestionsForCreation,
+                createdAt: Date.now(),
+                results: []
+            };
+
+            quizzes[quizId] = newQuiz;
+            saveToLocalStorage();
+
+            currentUserQuizId = quizId;
+
+            // Hide create page
+            hideCreateQuiz();
+
+            // Show success modal
+            showQuizCreatedSuccess(quizId);
+
+            // Update stats
+            updateGlobalStats();
+        }
+
+        function showQuizCreatedSuccess(quizId) {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black/90 z-[200] flex items-center justify-center p-6';
+            modal.innerHTML = `
+                <div class="glass max-w-md w-full p-8 rounded-3xl text-center">
+                    <div class="mx-auto w-20 h-20 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-check text-4xl"></i>
+                    </div>
+
+                    <div class="font-display text-4xl font-bold tracking-tight mb-2">Quiz Launched!</div>
+                    <p class="text-white/60 mb-6">Your friendship test is ready to go viral</p>
+
+                    <div class="bg-black/40 rounded-2xl p-4 mb-6 text-left">
+                        <div class="text-xs text-white/60 mb-1">SHAREABLE LINK</div>
+                        <div class="font-mono text-sm break-all text-pink-400" id="share-link-text">https://friendshipsuite.com/quiz/${quizId}</div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <button onclick="copyLinkFromModal('${quizId}', this)"
+                                class="py-3 flex items-center justify-center gap-x-2 border border-white/30 hover:bg-white/5 rounded-3xl text-sm font-semibold">
+                            <i class="fa-solid fa-copy"></i>
+                            <span>Copy Link</span>
+                        </button>
+
+                        <button onclick="demoTakeQuiz('${quizId}', this)"
+                                class="py-3 flex items-center justify-center gap-x-2 bg-gradient-to-r from-pink-500 to-purple-600 rounded-3xl text-sm font-semibold">
+                            <i class="fa-solid fa-play"></i>
+                            <span>Take as Friend (Demo)</span>
+                        </button>
+                    </div>
+
+                    <div class="mt-8 text-xs text-white/50">Your friends will see your profile and answers when they take it</div>
+
+                    <button onclick="this.closest('.fixed').remove()" class="mt-5 text-xs text-white/50 hover:text-white">Close</button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        function copyLinkFromModal(quizId, btn) {
+            const link = `https://friendshipsuite.com/quiz/${quizId}`;
+            navigator.clipboard.writeText(link).then(() => {
+                const originalText = btn.innerHTML;
+                btn.innerHTML = `<i class="fa-solid fa-check"></i> <span>Copied!</span>`;
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                }, 1500);
+            }).catch(() => {
+                alert("Link copied: " + link);
+            });
+        }
+
+        function demoTakeQuiz(quizId, btn) {
+            btn.closest('.fixed').remove();
+            startTakingQuiz(quizId, true);
+        }
+
+        function hideCreateQuiz() {
+            document.getElementById('create-page').classList.add('hidden');
+            document.getElementById('create-step-1').classList.remove('hidden');
+            document.getElementById('create-step-2').classList.add('hidden');
+            document.getElementById('create-step-3').classList.add('hidden');
+        }
+
+        function showCreateQuiz() {
+            const createPage = document.getElementById('create-page');
+            createPage.classList.remove('hidden');
+
+            // Reset form
+            document.getElementById('create-step-1').classList.remove('hidden');
+            document.getElementById('create-step-2').classList.add('hidden');
+            document.getElementById('create-step-3').classList.add('hidden');
+
+            selectedCategories = [];
+            selectedQuestionsForCreation = [];
+
+            // Set default values if empty
+            if (!document.getElementById('creator-name').value) {
+                document.getElementById('creator-name').value = "Alex Rivera";
+            }
+        }
+
+        function previewProfilePic(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('profile-preview');
+                preview.innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover rounded-3xl">`;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function useDefaultAvatar() {
+            const preview = document.getElementById('profile-preview');
+            preview.innerHTML = `<img src="https://i.pravatar.cc/128?u=defaultuser" class="w-full h-full object-cover rounded-3xl">`;
+        }
+
+        // Render Trending
+        function renderTrendingQuizzes() {
+            const container = document.getElementById('trending-grid');
+            container.innerHTML = '';
+
+            const trending = Object.values(quizzes).slice(0, 4);
+
+            trending.forEach(quiz => {
+                const card = document.createElement('div');
+                card.className = `modern-card glass p-5 rounded-3xl cursor-pointer border border-white/10 hover:border-pink-400/30`;
+
+                const resultCount = quiz.results ? quiz.results.length : 0;
+
+                card.innerHTML = `
+                    <div class="flex items-center gap-x-3 mb-4">
+                        <img src="${quiz.creator.pic}" class="w-11 h-11 rounded-2xl border border-white/20" alt="">
+                        <div>
+                            <div class="font-semibold">${quiz.creator.name}</div>
+                            <div class="text-xs text-white/50">@${quiz.creator.nick}</div>
+                        </div>
+                    </div>
+
+                    <div class="font-semibold text-lg mb-3 line-clamp-2 leading-tight">${quiz.creator.bio}</div>
+
+                    <div class="flex items-center justify-between text-sm">
+                        <div class="flex items-center gap-x-1 text-emerald-400">
+                            <i class="fa-solid fa-users text-xs"></i>
+                            <span>${resultCount} taken</span>
+                        </div>
+                        <div class="text-xs px-3 py-1 rounded-2xl bg-white/10">${quiz.questions.length} Qs</div>
+                    </div>
+                `;
+
+                card.onclick = () => startTakingQuiz(quiz.id);
+                container.appendChild(card);
+            });
+        }
+
+        function renderLeaderboardPreview() {
+            const container = document.getElementById('leaderboard-preview');
+            container.innerHTML = '';
+
+            let allResults = [];
+            Object.values(quizzes).forEach(quiz => {
+                if (quiz.results) {
+                    quiz.results.forEach(result => {
+                        allResults.push({
+                            ...result,
+                            creator: quiz.creator.name,
+                            quizId: quiz.id
+                        });
+                    });
+                }
+            });
+
+            allResults.sort((a, b) => b.percentage - a.percentage);
+            allResults = allResults.slice(0, 5);
+
+            if (allResults.length === 0) {
+                container.innerHTML = `<div class="p-8 text-center text-white/60">No results yet. Be the first bestie!</div>`;
+                return;
+            }
+
+            allResults.forEach((result, index) => {
+                const row = document.createElement('div');
+                row.className = `leaderboard-row flex items-center px-5 py-[13px] rounded-2xl mb-1 last:mb-0`;
+
+                const badgeColor = result.percentage >= 90 ? 'text-emerald-400' :
+                                  result.percentage >= 70 ? 'text-cyan-400' : 'text-amber-400';
+
+                row.innerHTML = `
+                    <div class="w-8 text-center font-mono text-xs text-white/40">#${index + 1}</div>
+                    <div class="flex-1 flex items-center gap-x-3 px-3">
+                        <div class="w-8 h-8 bg-gradient-to-br from-pink-500 to-purple-600 rounded-2xl flex items-center justify-center flex-shrink-0">
+                            <span class="text-xs font-bold">${result.friendName[0]}</span>
+                        </div>
+                        <div>
+                            <div class="font-semibold">${result.friendName}</div>
+                            <div class="text-xs text-white/60">${result.creator}</div>
+                        </div>
+                    </div>
+                    <div class="w-24 text-center">
+                        <span class="font-display text-xl font-bold">${result.percentage}</span>
+                        <span class="text-xs text-white/60">%</span>
+                    </div>
+                    <div class="w-24 text-center text-xs text-white/60">${result.timeTaken}</div>
+                    <div class="w-36 text-right">
+                        <span class="inline-block px-3 py-px text-xs rounded-2xl bg-white/10 ${badgeColor}">${result.badge}</span>
+                    </div>
+                `;
+
+                row.onclick = () => {
+                    showSection('leaderboard');
+                };
+
+                container.appendChild(row);
+            });
+        }
+
+        function showSection(section) {
+            // Hide all main sections
+            document.getElementById('home').classList.add('hidden');
+            document.getElementById('leaderboard-page').classList.add('hidden');
+            document.getElementById('create-page').classList.add('hidden');
+            document.getElementById('take-quiz-page').classList.add('hidden');
+            document.getElementById('results-page').classList.add('hidden');
+
+            if (section === 'home') {
+                document.getElementById('home').classList.remove('hidden');
+            } else if (section === 'leaderboard') {
+                document.getElementById('leaderboard-page').classList.remove('hidden');
+                renderFullLeaderboard();
+            }
+        }
+
+        function renderFullLeaderboard() {
+            const container = document.getElementById('full-leaderboard-list');
+            container.innerHTML = '';
+
+            let allResults = [];
+            Object.values(quizzes).forEach(quiz => {
+                if (quiz.results && quiz.results.length > 0) {
+                    quiz.results.forEach(result => {
+                        allResults.push({
+                            ...result,
+                            creator: quiz.creator.name,
+                            creatorNick: quiz.creator.nick,
+                            quizId: quiz.id
+                        });
+                    });
+                }
+            });
+
+            allResults.sort((a, b) => b.percentage - a.percentage);
+
+            if (allResults.length === 0) {
+                container.innerHTML = `<div class="px-6 py-12 text-center text-white/50">No scores yet. Create a quiz and start the ranking!</div>`;
+                return;
+            }
+
+            allResults.forEach((result, index) => {
+                const div = document.createElement('div');
+                div.className = `flex items-center px-6 py-4 hover:bg-white/5 transition-all rounded-2xl`;
+
+                const badgeHTML = getBadgeHTML(result.badge, result.percentage);
+
+                div.innerHTML = `
+                    <div class="w-9 text-center font-mono text-sm text-white/40">#${index + 1}</div>
+
+                    <div class="flex-1 px-4 flex items-center gap-x-3">
+                        <div class="w-9 h-9 bg-gradient-to-br from-pink-500 via-purple-500 to-cyan-400 rounded-2xl flex items-center justify-center flex-shrink-0 text-xs font-bold shadow-inner">
+                            ${result.friendName.substring(0, 2).toUpperCase()}
+                        </div>
+                        <div>
+                            <div class="font-semibold">${result.friendName}</div>
+                            <div class="text-xs text-white/60">vs ${result.creator}</div>
+                        </div>
+                    </div>
+
+                    <div class="w-24 text-center">
+                        <span class="font-display text-3xl font-extrabold">${result.percentage}</span>
+                        <span class="text-xs align-super text-white/60">%</span>
+                    </div>
+
+                    <div class="w-24 text-center text-xs text-white/60 font-mono">${result.timeTaken}</div>
+
+                    <div class="w-40 flex justify-end">
+                        ${badgeHTML}
+                    </div>
+                `;
+
+                container.appendChild(div);
+            });
+        }
+
+        function getBadgeHTML(badge, percentage) {
+            let color = 'text-emerald-400 border-emerald-400/40';
+            if (percentage < 70) color = 'text-amber-400 border-amber-400/40';
+            if (percentage < 40) color = 'text-orange-400 border-orange-400/40';
+
+            return `<span class="px-4 py-1 text-xs font-bold border ${color} rounded-2xl">${badge}</span>`;
+        }
+
+        function startTakingQuiz(quizId, isDemo = false) {
+            const quiz = quizzes[quizId];
+            if (!quiz) {
+                alert("Quiz not found!");
+                return;
+            }
+
+            currentQuiz = JSON.parse(JSON.stringify(quiz)); // clone
+            currentQuestionIndex = 0;
+            userAnswers = new Array(currentQuiz.questions.length).fill(null);
+            timeLeft = 480;
+
+            // Randomize question order
+            currentQuiz.questions.sort(() => 0.5 - Math.random());
+
+            // Show take quiz page
+            document.getElementById('home').classList.add('hidden');
+            document.getElementById('take-quiz-page').classList.remove('hidden');
+
+            // Populate header
+            document.getElementById('quiz-creator-name').innerHTML = quiz.creator.name;
+            document.getElementById('quiz-creator-subtitle').innerHTML = `@${quiz.creator.nick} • ${quiz.questions.length} questions`;
+
+            // Load first question
+            loadCurrentQuestion();
+
+            // Start timer
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(updateTimer, 1000);
+
+            // Fake loading animation
+            showFakeLoadingToast();
+        }
+
+        function showFakeLoadingToast() {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 glass px-5 py-2 text-xs rounded-3xl flex items-center gap-x-2 z-[200]';
+            toast.innerHTML = `
+                <i class="fa-solid fa-sync fa-spin text-pink-400"></i>
+                <span>Syncing with Friendship Servers...</span>
+            `;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.transition = 'all 0.3s';
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 1100);
+        }
+
+        function loadCurrentQuestion() {
+            if (!currentQuiz) return;
+
+            const q = currentQuiz.questions[currentQuestionIndex];
+
+            document.getElementById('question-text').innerHTML = q.q;
+            document.getElementById('question-category').innerHTML = `<i class="fa-solid fa-tag mr-1.5"></i> ${q.category}`;
+            document.getElementById('question-progress').innerHTML = `${currentQuestionIndex + 1}/${currentQuiz.questions.length}`;
+
+            // Progress bar
+            const progress = ((currentQuestionIndex + 1) / currentQuiz.questions.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+
+            // Render options
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+
+            q.options.forEach((option, index) => {
+                const optionEl = document.createElement('div');
+                optionEl.className = `option-card quiz-option px-6 py-[15px] rounded-2xl cursor-pointer flex items-center gap-x-4 border border-white/10 text-[15px]`;
+
+                const isSelected = userAnswers[currentQuestionIndex] === index;
+                if (isSelected) {
+                    optionEl.classList.add('selected', 'border-pink-500');
+                }
+
+                optionEl.innerHTML = `
+                    <div class="w-7 h-7 flex-shrink-0 rounded-xl border border-white/30 flex items-center justify-center">
+                        <span class="font-mono text-xs text-white/60">${String.fromCharCode(65 + index)}</span>
+                    </div>
+                    <div class="flex-1">${option}</div>
+                `;
+
+                optionEl.onclick = () => {
+                    selectAnswer(index, optionEl);
+                };
+
+                container.appendChild(optionEl);
+            });
+
+            // Update buttons
+            document.getElementById('prev-btn').disabled = currentQuestionIndex === 0;
+
+            const nextBtn = document.getElementById('next-btn');
+            const nextText = document.getElementById('next-btn-text');
+
+            if (currentQuestionIndex === currentQuiz.questions.length - 1) {
+                nextText.innerHTML = `Finish <i class="fa-solid fa-check ml-1"></i>`;
+                nextBtn.onclick = finishQuiz;
+            } else {
+                nextText.innerHTML = `Next`;
+                nextBtn.onclick = nextQuestion;
+            }
+        }
+
+        function selectAnswer(optionIndex, element) {
+            // Deselect siblings
+            const siblings = element.parentNode.children;
+            Array.from(siblings).forEach(el => el.classList.remove('selected', 'border-pink-500'));
+
+            element.classList.add('selected', 'border-pink-500');
+
+            // Store answer
+            userAnswers[currentQuestionIndex] = optionIndex;
+
+            // Sound effect
+            if (soundEnabled) playAnswerSound();
+
+            // Auto advance after 650ms for better flow (optional)
+            setTimeout(() => {
+                if (currentQuestionIndex < currentQuiz.questions.length - 1) {
+                    // Uncomment for auto advance: nextQuestion();
+                }
+            }, 650);
+        }
+
+        function nextQuestion() {
+            if (userAnswers[currentQuestionIndex] === null) {
+                const proceed = confirm("You haven't selected an answer. Skip anyway?");
+                if (!proceed) return;
+            }
+
+            currentQuestionIndex++;
+            if (currentQuestionIndex < currentQuiz.questions.length) {
+                loadCurrentQuestion();
+            } else {
+                finishQuiz();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadCurrentQuestion();
+            }
+        }
+
+        function updateTimer() {
+            timeLeft--;
+
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            const display = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+
+            const timerEl = document.getElementById('timer-display');
+            if (timerEl) timerEl.textContent = display;
+
+            if (timeLeft <= 60 && timerEl) {
+                timerEl.style.color = '#f87171';
+            }
+
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                finishQuiz(true);
+            }
+        }
+
+        function finishQuiz(timeUp = false) {
+            clearInterval(timerInterval);
+
+            // Calculate score
+            let correctCount = 0;
+            currentQuiz.questions.forEach((q, idx) => {
+                if (userAnswers[idx] === q.correctIndex) {
+                    correctCount++;
+                }
+            });
+
+            const percentage = Math.round((correctCount / currentQuiz.questions.length) * 100);
+            const timeTaken = timeLeft > 0 ? `${Math.floor((480 - timeLeft) / 60)}m ${((480 - timeLeft) % 60)}s` : "8m 00s";
+
+            // Determine badge and message
+            let badge = "";
+            let message = "";
+
+            if (percentage === 100) {
+                badge = "Soul Twin";
+                message = "You’re basically my soulmate.";
+            } else if (percentage >= 85) {
+                badge = "Certified Bestie";
+                message = "You actually pay attention to me.";
+            } else if (percentage >= 65) {
+                badge = "Ride or Die";
+                message = "We vibe on another level.";
+            } else if (percentage >= 45) {
+                badge = "Knows You From TikTok";
+                message = "You know me… kinda.";
+            } else if (percentage >= 25) {
+                badge = "Side Character";
+                message = "Have we even met before?";
+            } else {
+                badge = "Fake Friend Alert";
+                message = "You’re a government spy.";
+            }
+
+            // Prompt for friend name
+            let friendName = prompt("What's your name? (This will appear on the leaderboard)", "Bestie");
+            if (!friendName || friendName.trim() === "") friendName = "Anonymous Bestie";
+
+            // Save result
+            const result = {
+                friendName: friendName.trim(),
+                score: correctCount,
+                percentage: percentage,
+                timeTaken: timeTaken,
+                date: Date.now(),
+                badge: badge
+            };
+
+            if (!currentQuiz.results) currentQuiz.results = [];
+            currentQuiz.results.push(result);
+
+            // Update original quiz in storage
+            quizzes[currentQuiz.id].results = currentQuiz.results;
+            saveToLocalStorage();
+
+            // Hide take quiz page
+            document.getElementById('take-quiz-page').classList.add('hidden');
+
+            // Show results
+            showResultsPage(result, currentQuiz.creator, currentQuiz.id);
+
+            // Update UI
+            updateGlobalStats();
+            renderLeaderboardPreview();
+
+            // Confetti for high scores
+            if (percentage >= 85) {
+                setTimeout(() => {
+                    launchConfetti(percentage === 100 ? 220 : 140);
+                }, 450);
+            }
+
+            // Play result sound
+            if (soundEnabled) playResultSound(percentage);
+        }
+
+        function showResultsPage(result, creator, quizId) {
+            const resultsPage = document.getElementById('results-page');
+            resultsPage.classList.remove('hidden');
+
+            // Set score
+            document.getElementById('final-score').innerHTML = result.percentage;
+
+            // Animate score circle
+            const circle = document.getElementById('score-circle');
+            const circumference = 326.7;
+            const offset = circumference * (1 - result.percentage / 100);
+            circle.style.strokeDashoffset = offset;
+            circle.style.stroke = result.percentage > 80 ? '#10b981' : result.percentage > 50 ? '#ff00aa' : '#f59e0b';
+
+            // Badge
+            const badgeContainer = document.getElementById('result-badge');
+            let badgeClass = '';
+            let icon = '';
+
+            if (result.percentage >= 85) {
+                badgeClass = 'bg-emerald-500/20 text-emerald-400 border-emerald-400/40';
+                icon = 'fa-solid fa-heart';
+            } else if (result.percentage >= 65) {
+                badgeClass = 'bg-cyan-500/20 text-cyan-400 border-cyan-400/40';
+                icon = 'fa-solid fa-user-friends';
+            } else if (result.percentage >= 45) {
+                badgeClass = 'bg-amber-500/20 text-amber-400 border-amber-400/40';
+                icon = 'fa-solid fa-user-clock';
+            } else {
+                badgeClass = 'bg-orange-500/20 text-orange-400 border-orange-400/40';
+                icon = 'fa-solid fa-user-secret';
+            }
+
+            badgeContainer.className = `inline-flex items-center gap-x-2 px-6 py-2 rounded-3xl text-sm font-bold border ${badgeClass}`;
+            badgeContainer.innerHTML = `<i class="${icon}"></i> <span>${result.badge}</span>`;
+
+            document.getElementById('result-message').innerHTML = result.message || "Thanks for playing!";
+            document.getElementById('friend-name-result').innerHTML = result.friendName;
+            document.getElementById('rank-text').innerHTML = `#${getRank(result.percentage)} ${result.badge.split(' ')[0]}`;
+
+            // Store current result for sharing
+            window.lastResult = { result, creator, quizId };
+        }
+
+        function getRank(percentage) {
+            if (percentage >= 95) return "1";
+            if (percentage >= 85) return "2";
+            if (percentage >= 70) return "3";
+            return "4+";
+        }
+
+        function addReaction(emoji) {
+            const container = document.getElementById('results-page');
+            if (!container) return;
+
+            const rect = container.getBoundingClientRect();
+            const x = Math.random() * rect.width + rect.left;
+
+            const float = document.createElement('div');
+            float.className = 'floating-emoji';
+            float.style.left = `${x}px`;
+            float.style.top = `${rect.top + 120}px`;
+            float.textContent = emoji;
+
+            document.body.appendChild(float);
+
+            setTimeout(() => {
+                float.remove();
+            }, 2200);
+
+            // Bonus: small confetti
+            if (emoji === '🔥' || emoji === '❤️') {
+                launchMiniConfetti(18);
+            }
+        }
+
+        function launchConfetti(count = 150) {
+            const colors = ['#ff00aa', '#00f0ff', '#c026ff', '#ffd700', '#f472b6'];
+
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const conf = document.createElement('div');
+                    conf.className = 'confetti';
+                    conf.style.left = Math.random() * window.innerWidth + 'px';
+                    conf.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    conf.style.width = (Math.random() * 11 + 7) + 'px';
+                    conf.style.height = conf.style.width;
+                    conf.style.opacity = Math.random() * 0.9 + 0.4;
+                    conf.style.animationDuration = (Math.random() * 2.6 + 2.8) + 's';
+
+                    document.body.appendChild(conf);
+
+                    setTimeout(() => {
+                        if (conf && conf.parentNode) conf.parentNode.removeChild(conf);
+                    }, 5500);
+                }, i * 0.6);
+            }
+        }
+
+        function launchMiniConfetti(count) {
+            const colors = ['#ff00aa', '#00f0ff'];
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const conf = document.createElement('div');
+                    conf.className = 'confetti';
+                    conf.style.left = (Math.random() * 220 + window.innerWidth / 2 - 110) + 'px';
+                    conf.style.top = (window.innerHeight / 2 - 60) + 'px';
+                    conf.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    conf.style.width = '7px';
+                    conf.style.height = '7px';
+                    conf.style.animationDuration = '1.6s';
+                    document.body.appendChild(conf);
+
+                    setTimeout(() => conf.remove(), 2000);
+                }, i * 1.5);
+            }
+        }
+
+        function playAnswerSound() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+
+                oscillator.type = 'sine';
+                oscillator.frequency.value = 680;
+                gain.gain.value = 0.12;
+
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'lowpass';
+                filter.frequency.value = 1200;
+
+                oscillator.connect(filter);
+                filter.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                oscillator.start();
+
+                setTimeout(() => {
+                    gain.gain.linearRampToValueAtTime(0.001, audioCtx.currentTime + 0.18);
+                    setTimeout(() => oscillator.stop(), 220);
+                }, 60);
+            } catch(e) {}
+        }
+
+        function playResultSound(percentage) {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+
+                oscillator.type = percentage > 80 ? 'sine' : 'sawtooth';
+                oscillator.frequency.value = percentage > 80 ? 880 : 520;
+
+                gain.gain.value = 0.25;
+
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'lowpass';
+                filter.frequency.value = 1400;
+
+                oscillator.connect(filter);
+                filter.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                oscillator.start();
+
+                setTimeout(() => {
+                    oscillator.frequency.exponentialRampToValueAtTime(percentage > 80 ? 1240 : 340, audioCtx.currentTime + 0.6);
+                    gain.gain.linearRampToValueAtTime(0.001, audioCtx.currentTime + 1.1);
+                    setTimeout(() => oscillator.stop(), 1400);
+                }, 180);
+            } catch(e) {}
+        }
+
+        function shareResult() {
+            if (!window.lastResult) return;
+
+            const { result, creator, quizId } = window.lastResult;
+
+            const text = `I scored ${result.percentage}% on ${creator.name}'s Friendship Quiz! 🏆\n\nI'm a "${result.badge}" 😎\n\nTake the test: https://friendshipsuite.com/quiz/${quizId}`;
+
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => {
+                    const btns = document.querySelectorAll('#results-page button');
+                    if (btns.length > 0) {
+                        const original = btns[0].innerHTML;
+                        btns[0].innerHTML = `<i class="fa-solid fa-check"></i> Copied to clipboard!`;
+                        setTimeout(() => {
+                            if (btns[0]) btns[0].innerHTML = original;
+                        }, 1600);
+                    }
+                });
+            } else {
+                alert(text);
+            }
+
+            // Fake social share toast
+            setTimeout(() => {
+                const toast = document.createElement('div');
+                toast.className = `fixed bottom-8 left-1/2 -translate-x-1/2 px-6 py-3 rounded-3xl text-sm flex items-center gap-x-3 glass`;
+                toast.innerHTML = `🚀 Shared to TikTok & Instagram stories!`;
+                document.body.appendChild(toast);
+
+                setTimeout(() => toast.remove(), 2400);
+            }, 800);
+        }
+
+        function copyQuizLink() {
+            if (!window.lastResult) return;
+            const link = `https://friendshipsuite.com/quiz/${window.lastResult.quizId}`;
+            navigator.clipboard.writeText(link).then(() => {
+                alert("Link copied to clipboard!\n\n" + link);
+            }).catch(() => {
+                prompt("Copy this link:", link);
+            });
+        }
+
+        function exitQuiz() {
+            if (confirm("Are you sure you want to exit? Your progress will be lost.")) {
+                clearInterval(timerInterval);
+                document.getElementById('take-quiz-page').classList.add('hidden');
+                document.getElementById('home').classList.remove('hidden');
+            }
+        }
+
+        function restartToHome() {
+            document.getElementById('results-page').classList.add('hidden');
+            document.getElementById('home').classList.remove('hidden');
+            window.lastResult = null;
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            localStorage.setItem('fsSoundEnabled', soundEnabled);
+            updateSoundIcon();
+
+            if (soundEnabled) {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                osc.frequency.value = 880;
+                osc.type = 'sine';
+                const gain = audioCtx.createGain();
+                gain.gain.value = 0.15;
+                osc.connect(gain).connect(audioCtx.destination);
+                osc.start();
+                setTimeout(() => osc.stop(), 140);
+            }
+        }
+
+        function updateSoundIcon() {
+            const icon = document.getElementById('sound-toggle');
+            if (!icon) return;
+
+            if (soundEnabled) {
+                icon.innerHTML = `<i class="fa-solid fa-volume-up text-xl"></i>`;
+                icon.style.color = '#fff';
+            } else {
+                icon.innerHTML = `<i class="fa-solid fa-volume-mute text-xl"></i>`;
+                icon.style.color = '#64748b';
+            }
+        }
+
+        function toggleTheme() {
+            // Since we are locked into premium dark mode, just show a fun toast
+            const toast = document.createElement('div');
+            toast.className = `fixed top-20 right-6 px-5 py-2 rounded-2xl text-xs glass flex items-center gap-x-2`;
+            toast.innerHTML = `🌙 Dark mode is the only mode here. Premium vibes only.`;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.transition = 'all .3s';
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 1600);
+        }
+
+        function showMyQuizzes() {
+            const modal = document.createElement('div');
+            modal.className = `fixed inset-0 bg-black/90 z-[200] flex items-center justify-center p-5`;
+
+            let html = `<div class="glass max-w-lg w-full rounded-3xl overflow-hidden">`;
+            html += `<div class="px-6 py-5 border-b border-white/10 flex justify-between items-center"><div class="font-semibold text-xl">My Quizzes</div><button onclick="this.closest('.fixed').remove()" class="text-2xl">&times;</button></div>`;
+
+            const myQuizzes = Object.values(quizzes);
+
+            if (myQuizzes.length === 0) {
+                html += `<div class="p-8 text-center"><p class="text-white/70">You haven't created any quizzes yet.</p><button onclick="this.closest('.fixed').remove(); showCreateQuiz()" class="mt-6 px-8 py-2.5 bg-white text-black rounded-2xl text-sm font-semibold">Create Your First Quiz</button></div>`;
+            } else {
+                html += `<div class="max-h-[380px] overflow-auto p-2">`;
+
+                myQuizzes.forEach(quiz => {
+                    const taken = quiz.results ? quiz.results.length : 0;
+                    html += `
+                        <div class="px-5 py-4 flex items-center justify-between hover:bg-white/5 rounded-2xl m-1">
+                            <div class="flex items-center gap-x-3">
+                                <img src="${quiz.creator.pic}" class="w-10 h-10 rounded-2xl">
+                                <div>
+                                    <div class="font-semibold">${quiz.creator.name}</div>
+                                    <div class="text-xs text-white/60">${taken} friends tested • ${quiz.questions.length} questions</div>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-x-2">
+                                <button onclick="viewQuizLeaderboard('${quiz.id}', this)" class="px-4 py-1.5 text-xs border border-white/30 rounded-2xl hover:bg-white/10">Leaderboard</button>
+                                <button onclick="copyQuizLinkDirect('${quiz.id}', this)" class="px-4 py-1.5 text-xs bg-pink-500 text-white rounded-2xl">Share</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+            }
+
+            html += `</div>`;
+            modal.innerHTML = html;
+            document.body.appendChild(modal);
+        }
+
+        function viewQuizLeaderboard(quizId, btn) {
+            btn.closest('.fixed').remove();
+            showSection('leaderboard');
+
+            // Scroll to top and highlight if possible (simplified)
+            setTimeout(() => {
+                const list = document.getElementById('full-leaderboard-list');
+                if (list) list.scrollIntoView({ behavior: 'smooth' });
+            }, 400);
+        }
+
+        function copyQuizLinkDirect(quizId, btn) {
+            const link = `https://friendshipsuite.com/quiz/${quizId}`;
+            navigator.clipboard.writeText(link).then(() => {
+                const orig = btn.innerHTML;
+                btn.innerHTML = 'Copied!';
+                setTimeout(() => {
+                    if (btn) btn.innerHTML = orig;
+                }, 1200);
+            });
+        }
+
+        function showTakeQuizModal() {
+            const modal = document.createElement('div');
+            modal.className = `fixed inset-0 bg-black/90 z-[200] flex items-center justify-center p-6`;
+
+            modal.innerHTML = `
+                <div class="glass max-w-md w-full p-8 rounded-3xl">
+                    <div class="text-center">
+                        <div class="mx-auto w-16 h-16 bg-gradient-to-br from-pink-500 to-purple-500 rounded-full flex items-center justify-center mb-5">
+                            <i class="fa-solid fa-play text-3xl"></i>
+                        </div>
+                        <div class="font-display text-3xl font-bold mb-2">Take a Friendship Test</div>
+                        <p class="text-white/70 mb-8">Enter a quiz code or pick from trending</p>
+                    </div>
+
+                    <div class="mb-6">
+                        <div class="text-xs text-white/60 mb-1.5 px-1">QUIZ CODE</div>
+                        <div class="flex">
+                            <input id="quiz-code-input" type="text" placeholder="FS-XXXXXX" class="flex-1 bg-white/5 border border-white/20 rounded-l-2xl px-5 py-3 text-sm outline-none">
+                            <button onclick="takeQuizFromCode()" class="px-6 bg-white text-black font-semibold rounded-r-2xl text-sm">GO</button>
+                        </div>
+                    </div>
+
+                    <div class="text-xs text-center text-white/50 mb-4">or</div>
+
+                    <div class="grid grid-cols-1 gap-3">
+                        ${Object.values(quizzes).slice(0, 3).map(q => `
+                            <div onclick="takeQuizFromModal('${q.id}', this)" class="cursor-pointer flex items-center gap-x-4 p-4 rounded-2xl hover:bg-white/5 border border-white/10">
+                                <img src="${q.creator.pic}" class="w-10 h-10 rounded-2xl">
+                                <div class="flex-1 min-w-0">
+                                    <div class="font-semibold truncate">${q.creator.name}</div>
+                                    <div class="text-xs text-white/60">${q.results ? q.results.length : 0} taken</div>
+                                </div>
+                                <div class="text-pink-400"><i class="fa-solid fa-play"></i></div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="mt-8 text-center">
+                        <button onclick="this.closest('.fixed').remove()" class="text-xs text-white/60 hover:text-white">Cancel</button>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+        }
+
+        function takeQuizFromCode() {
+            const input = document.getElementById('quiz-code-input');
+            if (!input) return;
+
+            const code = input.value.trim().toUpperCase();
+            if (!code) return;
+
+            const modal = input.closest('.fixed');
+
+            if (quizzes[code]) {
+                modal.remove();
+                startTakingQuiz(code);
+            } else {
+                alert("Quiz code not found. Try one of the trending ones!");
+            }
+        }
+
+        function takeQuizFromModal(quizId, element) {
+            element.closest('.fixed').remove();
+            startTakingQuiz(quizId);
+        }
+
+        function updateNavAvatar() {
+            // Optional: can be expanded
+        }
+
+        // Boot the app
+        window.onload = function() {
+            initializeApp();
+            updateNavAvatar();
+
+            // Easter egg: press "?" to open create
+            document.addEventListener('keypress', function(e) {
+                if (e.key === '?') {
+                    e.preventDefault();
+                    showCreateQuiz();
+                }
+            });
+
+            // Show a welcome toast once
+            setTimeout(() => {
+                if (!localStorage.getItem('fs_welcomed')) {
+                    // Uncomment for production: console.log('%c[FS] Welcome message ready', 'color:#64748b');
+                    localStorage.setItem('fs_welcomed', 'true');
+                }
+            }, 6500);
+
+            // Make sure everything is visible
+            console.log('%c[Friendship Suite] All systems go. 50+ questions loaded. Fully functional single-file app ready.', 'color:#64748b');
+        }
+
+        // Expose some functions globally for debugging (optional)
+        window.FriendshipSuite = {
+            createQuiz: () => showCreateQuiz(),
+            takeRandom: () => {
+                const keys = Object.keys(quizzes);
+                if (keys.length > 0) startTakingQuiz(keys[Math.floor(Math.random() * keys.length)]);
+            }
+        };
+    </script>
+</body>
+</html>
+```
